@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Trakt.tv Scrobbler Installer by Liara#9557 and Xan#7777
+# Trakt.tv Scrobbler Original Installer by Liara#9557 and Xan#7777.
 
 plugindir=/mnt/cache/appdata/PlexMediaServer/Library/Application\ Support/Plex\ Media\ Server/Plug-ins/
 
