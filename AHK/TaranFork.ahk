@@ -160,12 +160,13 @@ WinClose,ahk_group taranexplorers
 
 
 switchToPtouch(){
-IfWinNotExist, ahk_class Afx:009E0000:8:00010007:00000000:09E0066D
-	{
+IfWinNotExist, ahk_exe ptedit54.exe
 	Run, ptedit54.exe
-	}
+
+if WinActive("ahk_exe ptedit54.exe")
+	Sendinput ^{tab}
 else
-	WinActivate ahk_class Afx:009E0000:8:00010007:00000000:09E0066D
+	WinActivate ahk_exe ptedit54.exe
 }
 
 
