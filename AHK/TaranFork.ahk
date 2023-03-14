@@ -159,45 +159,27 @@ WinClose,ahk_group taranexplorers
 }
 
 
-switchToPremiere(){
-IfWinNotExist, ahk_class Premiere Pro
+switchToPtouch(){
+IfWinNotExist, ahk_class Afx:009E0000:8:00010007:00000000:09E0066D
 	{
-	;Run, Adobe Premiere Pro.exe
-	;Adobe Premiere Pro CC 2017
-	; Run, C:\Program Files\Adobe\Adobe Premiere Pro CC 2017\Adobe Premiere Pro.exe ;if you have more than one version instlaled, you'll have to specify exactly which one you want to open.
-	Run, Adobe Premiere Pro.exe
-	}
-if WinActive("ahk_class Premiere Pro")
-	{
-	IfWinNotExist, ahk_exe notepad++.exe
-		{
-		Run, notepad++.exe
-		sleep 200
-		}
-	WinActivate ahk_exe notepad++.exe ;so I have this here as a workaround to a bug. Sometimes Premeire becomes unresponsive to keyboard input. (especially after timeline scrolling, especially with a playing video.) Switching to any other application and back will solve this problem. So I just hit the premiere button again, in those cases.g
-	sleep 10
-	WinActivate ahk_class Premiere Pro
+	Run, ptedit54.exe
 	}
 else
-	WinActivate ahk_class Premiere Pro
+	WinActivate ahk_class Afx:009E0000:8:00010007:00000000:09E0066D
 }
 
 
-switchToWord()
-{
-Process, Exist, WINWORD.EXE
+switchToExcel(){
+Process, Exist, EXCEL.EXE
 ;msgbox errorLevel `n%errorLevel%
 	If errorLevel = 0
-		Run, WINWORD.EXE
+		Run, EXCEL.EXE
+		GroupAdd, taranexcel, ahk_class XLMAIN
+	if WinActive("ahk_class XLMAIN")
+		GroupActivate, taranexcel, r
 	else
-	{
-	IfWinExist, Microsoft Office Word, OK ;checks to see if the annoying "do you want to continue searching from the beginning of the document" dialouge box is present.
-		sendinput, {escape}
-	else if WinActive("ahk_class OpusApp")
-		sendinput, {F3} ;set to "go to next comment" in Word.
-	else
-		WinActivate ahk_class OpusApp
-	}
+		WinActivate ahk_class XLMAIN
+	
 }
 
 
@@ -684,37 +666,38 @@ Return
 ;;---These are mostly application switching keys.---
 #IfWinActive
 
-;Macro key G13
-;F13:: ;it's more reliable to use the scan code, i guess? Maybe because I used "F13::" elsewhere.
-SC064::back()
 
 ;macro key G16
-^F1::switchToFirefox()
-+^F1::switchToOtherFirefoxWindow() ;^+F1 ^+{F1}
+F1::switchToFirefox()
+^F1::switchToOtherFirefoxWindow() ;^+F1 ^+{F1}
 
 ;macro key G17
-^F2::switchToExplorer()
-!^F2::closeAllExplorers()
-
-;macro key G18
-^F3::switchToPremiere()
-
-;macro key G15
-^F4::switchToWord()
-+^F4::switchWordWindow() ; AKA, ^+F4 ^+{F4}
+F2::switchToExplorer()
+^F2::closeAllExplorers()
 
 ;No K95 macro key assigned:
-^F5::switchToChrome()
+F3::switchToChrome()
 ;also, CTRL works a little funny when the function uses CTRL TAB to switch tabs. This might be better assigned to ALT F5 or something.
 
+;Macro key G13
+;F13:: ;it's more reliable to use the scan code, i guess? Maybe because I used "F13::" elsewhere.
+F4::back()
+
+;macro key G18
+F6::switchToPtouch()
+
+;macro key G15
+F5::switchToExcel()
+;+^F4::switchWordWindow() ; AKA, ^+F4 ^+{F4}
+
 ;macro key G14
-+^F6::
++^F7::
 windowSaver()
 msgbox,,, savedCLASS = %savedCLASS% `nsavedEXE = %savedEXE%, 0.6
 Return
 
 ;Macro key G14
-^F6::
+^F8::
 ;I had to learn just now to use the parameter to pass "savedCLASS" even though it's already a global variable. Just works better this way... but really IDK what i am doing.
 ;msgbox,,, switching to `nsavedCLASS = %savedCLASS% `nsavedEXE = %savedEXE%,0.3
 switchToSavedApp(savedCLASS) 
@@ -745,6 +728,6 @@ Joy3::msgbox you hit Joy3
 #ifWinActive
 !,::msgbox, A_workingDir should be %A_WorkingDir%
 !.::msgbox, TaranDir should be %TaranDir%
-Xbutton1::return
-Xbutton2::return ;these are both on the side of my mouse and I don't like accidentally hitting them.
+;Xbutton1::return
+;Xbutton2::return ;these are both on the side of my mouse and I don't like accidentally hitting them.
 
