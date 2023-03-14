@@ -70,6 +70,8 @@ if WinActive("ahk_class Chrome_WidgetWin_1")
 	Send ^+{tab}
 if WinActive("ahk_class Notepad++")
 	Send ^+{tab}
+if WinActive("ahk_exe mRemoteNG.exe")
+	Send ^+{tab}
 if WinActive("ahk_exe Adobe Premiere Pro.exe")
 	Send ^!+b ;ctrl alt shift B  is my shortcut in premiere for "go back"(in bins)(the project panel)
 if WinActive("ahk_exe explorer.exe")
@@ -212,6 +214,18 @@ if WinActive("ahk_exe chrome.exe")
 else
 	WinActivate ahk_exe chrome.exe
 }
+
+switchToMremote()
+{
+IfWinNotExist, ahk_exe mRemoteNG.exe
+	Run, mRemoteNG.exe
+if WinActive("ahk_exe mRemoteNG.exe")
+	Sendinput ^{tab}
+else
+	WinActivate ahk_exe mRemoteNG.exe
+}
+
+
 
 switchToStreamDeck(){
 IfWinNotExist, ahk_exe StreamDeck.exe
@@ -698,11 +712,15 @@ msgbox,,, savedCLASS = %savedCLASS% `nsavedEXE = %savedEXE%, 0.6
 Return
 
 ;Macro key G14
-^F8::
+^F7::
 ;I had to learn just now to use the parameter to pass "savedCLASS" even though it's already a global variable. Just works better this way... but really IDK what i am doing.
 ;msgbox,,, switching to `nsavedCLASS = %savedCLASS% `nsavedEXE = %savedEXE%,0.3
 switchToSavedApp(savedCLASS) 
 return
+
+F8::switchToMremote()
+;+^F4::switchWordWindow() ; AKA, ^+F4 ^+{F4}
+
 
 ;No K95 macro key assigned:
 ^F9::windowSwitcher("ahk_exe AfterFX.exe","C:\Program Files\Adobe\Adobe After Effects CC 2017\Support Files\AfterFX.exe") ;NOTE: was used for toggle all video tracks in premiere.
