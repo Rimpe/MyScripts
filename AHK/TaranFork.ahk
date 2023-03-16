@@ -9,6 +9,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance force
 #WinActivateForce
 
+
 ; global savedCLASS = "ahk_class Notepad++"
 ; global savedEXE = "notepad++.exe"
 
@@ -22,7 +23,6 @@ Menu, Tray, Icon, shell32.dll, 16 ;this changes the icon into a little laptop th
 
 
 #IfWinActive
-
 
 windowSaver()
 {
@@ -56,8 +56,6 @@ if savedCLASS = ahk_class Notepad++
 ;msgbox,,,got to here,0.5
 windowSwitcher(savedCLASS, savedEXE)
 }
-
-
 
 
 
@@ -164,7 +162,6 @@ WinClose,ahk_group taranexplorers
 switchToPtouch(){
 IfWinNotExist, ahk_exe ptedit54.exe
 	Run, ptedit54.exe
-
 if WinActive("ahk_exe ptedit54.exe")
 	Sendinput ^{tab}
 else
@@ -182,7 +179,27 @@ Process, Exist, EXCEL.EXE
 		GroupActivate, taranexcel, r
 	else
 		WinActivate ahk_class XLMAIN
-	
+			
+}
+
+switchToOutlook(){
+IfWinNotExist, ahk_class rctrl_renwnd32
+	Run, OUTLOOK.EXE
+GroupAdd, taranoutlooks, ahk_class rctrl_renwnd32
+if WinActive("ahk_exe OUTLOOK.EXE")
+	GroupActivate, taranoutlooks, r
+else
+	WinActivate ahk_class rctrl_renwnd32 ;you have to use WinActivatebottom if you didn't create a window group.
+}
+
+switchToTeams(){
+IfWinNotExist, ahk_exe Teams.exe
+	Run, Teams.exe
+GroupAdd, taranteams, ahk_exe Teams.exe
+if WinActive("ahk_exe Teams.exe")
+	GroupActivate, taranteams, r
+else
+	WinActivate ahk_exe Teams.exe ;you have to use WinActivatebottom if you didn't create a window group.
 }
 
 
@@ -208,7 +225,6 @@ switchToChrome()
 {
 IfWinNotExist, ahk_exe chrome.exe
 	Run, chrome.exe
-
 if WinActive("ahk_exe chrome.exe")
 	Sendinput ^{tab}
 else
@@ -687,8 +703,8 @@ F1::switchToFirefox()
 ^F1::switchToOtherFirefoxWindow() ;^+F1 ^+{F1}
 
 ;macro key G17
-F2::switchToExplorer()
-^F2::closeAllExplorers()
+;F2::switchToExplorer()
+;^F2::closeAllExplorers()
 
 ;No K95 macro key assigned:
 F3::switchToChrome()
@@ -700,10 +716,6 @@ F4::back()
 
 ;macro key G18
 F6::switchToPtouch()
-
-;macro key G15
-F5::switchToExcel()
-;+^F4::switchWordWindow() ; AKA, ^+F4 ^+{F4}
 
 ;macro key G14
 +^F7::
@@ -726,11 +738,44 @@ F8::switchToMremote()
 ^F9::windowSwitcher("ahk_exe AfterFX.exe","C:\Program Files\Adobe\Adobe After Effects CC 2017\Support Files\AfterFX.exe") ;NOTE: was used for toggle all video tracks in premiere.
 ^F10::windowSwitcher("ahk_exe StreamDeck.exe","C:\Program Files\Elgato\StreamDeck\StreamDeck.exe")
 
+^F12::
+Reload
+Sleep 1000 ; If successful, the reload will close this instance during the Sleep, so the line below will never be reached.
+MsgBox, 4,, The script could not be reloaded. Would you like to open it for editing?
+IfMsgBox, Yes, Edit
+return
+
 ; ^F11 is taken by filemover.ahk
 ; ^F12 is also taken by filemover.ahk
 ;NOTE: ^F12 (ctrl F12) is forbidden by Premiere, since it opens the Premiere CONSOLE. interesting.
 
 ;;------END OF CTRL FUNCITON KEYS----------
+
+
+;;-----BEGIN FUNCTION KEYS PAIRED WITH NUMPAD --------
+;;---These are mostly application switching keys.---
+
+
+
+NumpadIns::switchToExplorer()
+^NumpadIns::closeAllExplorers()
+NumpadEnd::switchToExcel()
+NumpadDown::switchToOutlook()
+NumpadPgDn::switchToTeams()
+; NumpadLeft	
+; NumpadClear	
+; NumpadRight	
+; NumpadHome	
+; NumpadUp	
+; NumpadPgUp	
+NumpadDel::Run "mailto:"
+
+
+
+
+;;------END OF CTRL FUNCITON KEYS----------
+
+
 
 ;#IfWinActive
 ;winkey Z opens the CLOCK / CALENDAR. ;http://superuser.com/questions/290068/windows-keyboard-shortcut-to-view-calendar
@@ -749,4 +794,6 @@ Joy3::msgbox you hit Joy3
 !.::msgbox, TaranDir should be %TaranDir%
 ;Xbutton1::return
 ;Xbutton2::return ;these are both on the side of my mouse and I don't like accidentally hitting them.
+
+
 
