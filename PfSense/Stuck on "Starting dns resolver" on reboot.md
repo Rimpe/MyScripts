@@ -1,6 +1,6 @@
 source: https://www.reddit.com/r/PFSENSE/comments/89gt37/stuck_on_starting_dns_resolver_on_reboot/
 
-=========
+```
 this worked for me: hit ctrl-c + enter > to bring you to the shell #
 backup the file just in case
 
@@ -13,4 +13,4 @@ re-create an empty file
 touch /var/unbound/pfb_dnsbl.conf
 
 reboot
-=========
+```
